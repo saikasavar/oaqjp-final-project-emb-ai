@@ -11,19 +11,27 @@ def emotion_detector(text_to_analyze):
     myjob = { "raw_document": { "text": text_to_analyze } }
 
     response = requests.post(url, json = myjob, headers=headers,timeout=30)
-    formatted_response = json.loads(response.text)
-    emotion_dict = formatted_response['emotionPredictions'][0]
+    print(response.status_code)
+    if response.status_code == 200:
+        formatted_response = json.loads(response.text)
+        emotion_dict = formatted_response['emotionPredictions'][0]
 
-    anger_score = emotion_dict['emotion']['anger']
-    disgust_score = emotion_dict['emotion']['disgust']
-    fear_score = emotion_dict['emotion']['fear']
-    joy_score = emotion_dict['emotion']['joy']
-    sadness_score = emotion_dict['emotion']['sadness']
+        anger_score = emotion_dict['emotion']['anger']
+        disgust_score = emotion_dict['emotion']['disgust']
+        fear_score = emotion_dict['emotion']['fear']
+        joy_score = emotion_dict['emotion']['joy']
+        sadness_score = emotion_dict['emotion']['sadness']
 
-    data = {'anger':anger_score, 'disgust':disgust_score, 'fear': fear_score, 
-    'joy': joy_score, 'sadness': sadness_score }
-    dominant_emotion = max(data, key=data.get)
-    result = {'anger':anger_score, 'disgust':disgust_score, 'fear': fear_score, 'joy': joy_score, 
-    'sadness': sadness_score, 'dominant_emotion': dominant_emotion  }
+        data = {'anger':anger_score, 'disgust':disgust_score, 'fear': fear_score, 
+        'joy': joy_score, 'sadness': sadness_score }
+        dominant_emotion = max(data, key=data.get)
+        result = {'anger':anger_score, 'disgust':disgust_score, 'fear': fear_score, 'joy': joy_score, 
+        'sadness': sadness_score, 'dominant_emotion': dominant_emotion  }
+    elif response.status_code == 400:
+        result = {'anger':None, 'disgust':None, 'fear': None, 'joy': None, 
+        'sadness': None, 'dominant_emotion': None  }
+    else:
+        result = {'anger':None, 'disgust':None, 'fear': None, 'joy': None, 
+        'sadness': None, 'dominant_emotion': None  }
 
     return result
