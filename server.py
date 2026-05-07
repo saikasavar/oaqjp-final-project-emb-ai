@@ -1,3 +1,8 @@
+''' Executing this function initiates the application of sentiment
+    analysis to be executed over the Flask channel and deployed on
+    localhost:5000.
+'''
+
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
@@ -20,9 +25,9 @@ def emotional_detect():
 
     #return the respone
     if response['dominant_emotion'] is None:
-        return f"<b> Inavlid text! Please try again!."
-    else:
-        return f"For the given statement, the system response is 'anger': {response['anger']}, " \
+        return "<b> Inavlid text! Please try again!."
+    
+    return f"For the given statement, the system response is 'anger': {response['anger']}, " \
            f"'disgust': {response['disgust']}, 'fear': {response['fear']}, " \
            f"'joy': {response['joy']} and 'sadness': {response['sadness']}. " \
            f"The Dominant emotion is {response['dominant_emotion']}"
